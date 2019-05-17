@@ -43,7 +43,7 @@ function _python_venv() {
 
 function _sudo_color() {
   if [[ "$USER" == "root" ]]; then
-    echo "%{\e[1;32m%}"
+    echo "%{\e[1;31m%}"
   fi
 }
 
