@@ -19,7 +19,7 @@ function retcode() {}
 
 function _host() {
   if [[ -n $SSH_CONNECTION ]] || [[ -n $AIOAD ]]; then
-    echo "%B%m%b%"
+    echo "%B%m%b"
   fi
 }
 
