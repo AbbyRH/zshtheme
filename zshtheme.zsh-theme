@@ -43,19 +43,19 @@ function _python_venv() {
 
 function _sudo_color() {
   if [[ "$USER" == "root" ]]; then
-    echo "%{\e[1;31m%}"
+    echo "%{$fg[red]%}"
   fi
 }
 
 function _end_sudo_color() {
   if [[ "$USER" == "root" ]]; then
-    echo "%{\e[0m%}"
+    echo "%{$reset_color%}"
   fi
 }
 
 
 # alternate prompt with git & hg
 PROMPT=$'%{\e[0;34m%}%B$(_sudo_color)┌─$(_end_sudo_color)$(_python_venv)$(_user)[%b%{\e[0m%}%{\e[0;36m%}$(_host)%{\e[0;34m%}%B:%b%{\e[0;34m%}%b%{\e[1;37m%}%~%{\e[0;34m%}%B]%b%{\e[0m%}$(mygit)
-%{\e[0;34m%}%B└─▪%b '
+%{\e[0;34m%}%B$(_sudo_color)└─▪$(_end_sudo_color)%b '
 PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
 RPROMPT=$'%{\e[0;34m%}%B[%b%{\e[0m%}%*%{\e[0;34m%}%B]%b%{\e[0m%}'
