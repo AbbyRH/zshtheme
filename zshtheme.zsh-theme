@@ -79,4 +79,4 @@ get_space () {
 }
 PROMPT=$'$(_top_link)$(_python_venv)$(_user)$(_host_path)$(mygit)
 $(_bottom_link) '
-PS2=" \e[0;34m%}%B>%{\e[0m%}%b "
+PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
