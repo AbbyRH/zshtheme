@@ -17,23 +17,7 @@ function mygit() {
 
 function retcode() {}
 
-function _host() {
-  if [[ -n $SSH_CONNECTION ]] || [[ -n $AIOAD ]]; then
-    echo "%B%m%b"
-  fi
-}
 
-function _user() {
-  if [[ "$DEFAULT_USER" != "$USER" ]]; then
-    if [[ "$USER" == "root" ]]; then
-      me="%B%U%{\e[31m%}%n%{\e[0m%}%u%b"
-    else
-      me="%n"
-    fi
- 
-    echo "[%b%{\e[0m%}%{\e[1;32m%}$me%{\e[1;30m%}\e[0;34m%}%B]"
-  fi
-}
 
 function _python_venv() {
   if [[ $VIRTUAL_ENV != "" ]]; then
@@ -41,21 +25,58 @@ function _python_venv() {
   fi
 }
 
-function _sudo_color() {
-  if [[ "$USER" == "root" ]]; then
-    echo "%{$fg[red]%}"
+bkt_color="%B$fg[blue]"
+function _top_link() {
+  top_link='┌─'
+  if [[ $USER == 'root' ]]; then
+    echo "%B$fg[red]$top_link$reset_color%b"
+  else
+    echo "$bkt_color$top_link$reset_color%b"
   fi
 }
 
-function _end_sudo_color() {
-  if [[ "$USER" == "root" ]]; then
-    echo "%{$reset_color%}"
+function _bottom_link() {
+  bottom_link='└─▪'
+  if [[ $USER == 'root' ]]; then
+    echo "%B$fg[red]$bottom_link$reset_color%b"
+  else
+    echo "$bkt_color$bottom_link$reset_color%b"
   fi
 }
 
+function _user() {
+  if [[ "$DEFAULT_USER" != "$USER" ]]; then
+    if [[ "$USER" == "root" ]]; then
+      echo "%B%U$fg[red][%n]$reset_color%b%u"
+    else
+      echo "${bkt_color}[%b$fg[green]%n${bkt_color}]$reset_color%b"
+    fi
+  fi
+}
 
-# alternate prompt with git & hg
-PROMPT=$'%{\e[0;34m%}%B$(_sudo_color)┌─$(_end_sudo_color)$(_python_venv)$(_user)[%b%{\e[0m%}%{\e[0;36m%}$(_host)%{\e[0;34m%}%B:%b%{\e[0;34m%}%b%{\e[1;37m%}%~%{\e[0;34m%}%B]%b%{\e[0m%}$(mygit)
-%{\e[0;34m%}%B$(_sudo_color)└─▪$(_end_sudo_color)%b '
-PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
-RPROMPT=$'%{\e[0;34m%}%B[%b%{\e[0m%}%*%{\e[0;34m%}%B]%b%{\e[0m%}'
+function _host_path() {
+  echo "${bkt_color}[%b${fg[cyan]}$(_host)$bkt_color:%b$fg[white]%~$bkt_color]$reset_color$b"
+}
+function _host() {
+  if [[ -n $SSH_CONNECTION ]] || [[ -n $AIOAD ]]; then
+    echo "%B%m%b"
+  fi
+}
+
+get_space () {
+  local STR=$1$2
+  local zero='%([BSUbfksu]|([FB]|){*})'
+  local LENGTH=${#${(S%%)STR//$~zero/}}
+  local SPACES=""
+  (( LENGTH = ${COLUMNS} - $LENGTH - 1))
+
+  for i in {0..$LENGTH}
+    do
+      SPACES="$SPACES "
+    done
+
+  echo $SPACES
+}
+PROMPT=$'$(_top_link)$(_python_venv)$(_user)$(_host_path)$(mygit)
+$(_bottom_link) '
+PS2=" \e[0;34m%}%B>%{\e[0m%}%b "
