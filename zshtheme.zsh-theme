@@ -25,37 +25,37 @@ function _python_venv() {
   fi
 }
 
-bkt_color="%B$fg[blue]"
+bkt_color="%B%{$fg[blue]%}"
 function _top_link() {
   top_link='┌─'
   if [[ $USER == 'root' ]]; then
-    echo "%B$fg[red]$top_link$reset_color%b"
+    echo "%B%{$fg[red]%}$top_link%{$reset_color%}%b"
   else
-    echo "$bkt_color$top_link$reset_color%b"
+    echo "$bkt_color$top_link%{$reset_color%}%b"
   fi
 }
 
 function _bottom_link() {
   bottom_link='└─▪'
   if [[ $USER == 'root' ]]; then
-    echo "%B$fg[red]$bottom_link$reset_color%b"
+    echo "%B%{$fg[red]%}$bottom_link{%$reset_color%}%b"
   else
-    echo "$bkt_color$bottom_link$reset_color%b"
+    echo "$bkt_color$bottom_link%{$reset_color%}%b"
   fi
 }
 
 function _user() {
   if [[ "$DEFAULT_USER" != "$USER" ]]; then
     if [[ "$USER" == "root" ]]; then
-      echo "%B%U$fg[red][%n]$reset_color%b%u"
+      echo "%B%U%{$fg[red]%}[%n]%{$reset_color%}%b%u"
     else
-      echo "${bkt_color}[%b$fg[green]%n${bkt_color}]$reset_color%b"
+      echo "${bkt_color}[%b%{$fg[green]%}%n${bkt_color}]%{$reset_color%}%b"
     fi
   fi
 }
 
 function _host_path() {
-  echo "${bkt_color}[%b${fg[cyan]}$(_host)$bkt_color:%b$fg[white]%~$bkt_color]$reset_color$b"
+  echo "${bkt_color}[%b%{${fg[cyan]}%}$(_host)$bkt_color:%b%{$fg[white]%}%~$bkt_color]%{$reset_color%}$b"
 }
 function _host() {
   if [[ -n $SSH_CONNECTION ]] || [[ -n $AIOAD ]]; then
@@ -79,4 +79,4 @@ get_space () {
 }
 PROMPT=$'$(_top_link)$(_python_venv)$(_user)$(_host_path)$(mygit)
 $(_bottom_link) '
-PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
+PS2=$' ${\e[0;34m%}%B>%{\e[0m%}%b '
