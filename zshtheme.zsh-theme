@@ -38,7 +38,7 @@ function _top_link() {
 function _bottom_link() {
   bottom_link='└─▪'
   if [[ $USER == 'root' ]]; then
-    echo "%B%{$fg[red]%}$bottom_link{%$reset_color%}%b"
+    echo "%B%{$fg[red]%}$bottom_link%{$reset_color%}%b"
   else
     echo "$bkt_color$bottom_link%{$reset_color%}%b"
   fi
