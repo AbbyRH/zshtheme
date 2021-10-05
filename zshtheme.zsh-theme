@@ -25,6 +25,12 @@ function _python_venv() {
   fi
 }
 
+function _aws_vault() {
+  if [[ $AWS_VAULT != "" ]]; then
+    echo "%{$fg[red]%}(${AWS_VAULT##*/})%{$reset_color%} "
+  fi
+}
+
 bkt_color="%B%{$fg[blue]%}"
 function _top_link() {
   top_link='┌─'
@@ -77,6 +83,6 @@ get_space () {
 
   echo $SPACES
 }
-PROMPT=$'$(_top_link)$(_python_venv)$(_user)$(_host_path)$(mygit)
+PROMPT=$'$(_top_link)$(_aws_vault)$(_python_venv)$(_user)$(_host_path)$(mygit)
 $(_bottom_link) '
 PS2=$' %{\e[0;34m%}%B>%{\e[0m%}%b '
